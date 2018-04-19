@@ -1,0 +1,81 @@
+
+
+entity Pessoa {
+	nome String maxlength (100) minlength(10) pattern(/[A-Z]+/),
+    e_mail String maxlength (50) minlength(10),
+    idade Integer min(0), 
+    nivel NivelDeficiencia,
+    localizacao Integer required,
+    nivelhab NivelHabilidade
+       
+}
+
+enum NivelDeficiencia{
+	TOTAL, PARCIAL, SEM_DEFICIENCIA
+}
+
+enum NivelHabilidade{
+	NENHUM, BASICO, INTERMEDIARIO, AVANCADO
+}
+
+
+entity Semaforo{
+	fucionamento Boolean required,
+    localizacaoatual Integer required
+    }
+
+entity Orgao{
+	nome String required maxlength(50), 
+    cnpj Integer required maxlength (14) pattern(/[0-9]+/),
+    telefone Integer,
+    localizacaoorgao Integer required,
+    tipo TipoOrgao 
+}
+
+enum TipoOrgao{
+	INCLUSAO_EDUCACAO, PUBLICO, PRIVADO
+}
+
+entity Sugestao{
+	localizacaosugestao Integer required,
+    datasugestao LocalDate required,
+    descricao String maxlength(500) required,
+    tipo TipoSugestao 
+}
+
+enum TipoSugestao{
+	INSTALACAO, MANUTENCAO
+}
+
+entity Estoque{
+	numArduino Integer min(0),
+    numBotoeira Integer min(0)
+}
+
+entity Mapa{
+	mapa Blob maxbytes(2048),
+    datatualizacao LocalDate required,
+    datacriacaomapa LocalDate required
+}
+
+
+relationship OneToMany {
+	Pessoa{pessoa} to Semaforo{semaforo}
+}
+
+relationship OneToOne {
+  Semaforo{semaforo} to Estoque{estoque}
+}
+
+relationship OneToMany {
+  Orgao{orgao} to Semaforo{semaforo}
+}
+
+relationship OneToMany {
+	Pessoa{pessoa} to Sugestao{sugestao}
+}
+
+
+
+
+
